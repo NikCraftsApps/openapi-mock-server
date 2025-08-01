@@ -1,0 +1,26 @@
+[
+  {
+    "Id": "b5c59a2e-ec5a-4c38-9e41-c42b5f421f5b",
+    "Route": "/hello",
+    "Method": "GET",
+    "Response": "{\u0022message\u0022:\u0022Hello world!\u0022}",
+    "StatusCode": 200,
+    "CallCount": 0
+  },
+  {
+    "Id": "b3fbe31f-3572-4cb4-a2c1-9d26950d7a3f",
+    "Route": "/user",
+    "Method": "POST",
+    "Response": "{\u0022status\u0022:\u0022user created\u0022,\u0022userId\u0022:123}",
+    "StatusCode": 201,
+    "CallCount": 0
+  },
+  {
+    "Id": "7c370b9e-1de7-4cd6-8b84-0a9fc2d7e6b7",
+    "Route": "/products",
+    "Method": "GET",
+    "Response": "{\u0022products\u0022:\u0022[object Object],[object Object]\u0022}",
+    "StatusCode": 200,
+    "CallCount": 0
+  }
+]

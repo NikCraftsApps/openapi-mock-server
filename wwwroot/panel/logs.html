@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mock API Logs</title>
+    <link rel="stylesheet" href="/panel/style.css">
+</head>
+<body>
+    <header>
+        <h1>Mock API Logs</h1>
+        <div class="header-links">
+            <a class="swagger-link" href="/panel/index.html">Back to Panel</a>
+        </div>
+    </header>
+
+
+    <main class="container">
+        <section style="flex:1;">
+            <h2>Logs</h2>
+            <button id="refreshLogs" style="margin-bottom:10px;">Refresh</button>
+            <div id="log-container" class="log-container"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Author: <a href="https://github.com/your-github" target="_blank">GitHub</a></p>
+    </footer>
+
+    <script>
+        async function loadLogs() {
+            const res = await fetch('/logs');
+            const logs = await res.json();
+            const container = document.getElementById('log-container');
+            container.innerHTML = '';
+            logs.forEach(line => {
+                const div = document.createElement('div');
+                div.textContent = line;
+                container.appendChild(div);
+            });
+        }
+        document.getElementById('refreshLogs').addEventListener('click', loadLogs);
+        loadLogs();
+    </script>
+</body>
+</html>
