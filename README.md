@@ -31,7 +31,7 @@ Perfect for **frontend developers** who want to **practice API calls**, learn HT
 
 ### Run Application
 ```bash
-git clone https://github.com/your-username/mock-api-server.git
+git clone https://github.com/NikCraftsApps/openapi-mock-server.git
 cd mock-api-server
 dotnet restore
 dotnet run
