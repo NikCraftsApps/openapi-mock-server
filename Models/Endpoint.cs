@@ -8,4 +8,5 @@ public class Endpoint
     public string Response { get; set; } = "{}";
     public int StatusCode { get; set; } = 200;
     public int CallCount { get; set; } = 0;
+    public int DelayMs { get; set; } = 0;
 }

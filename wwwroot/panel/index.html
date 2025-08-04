@@ -2,79 +2,89 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Mock API Panel</title>
+    <title>MockAPI Studio</title>
     <link rel="stylesheet" href="/panel/style.css">
 </head>
 <body>
-<header>
-    <h1>Mock API Panel</h1>
-    <div class="header-links">
-        <a class="swagger-link" href="/swagger" target="_blank">Swagger Docs</a>
-        <a class="swagger-link" href="/panel/logs.html">Logs</a>
-    </div>
-</header>
-
-<main class="container">
-    <section id="endpoint-list-section">
-        <h2>Registered Endpoints</h2>
-        <div id="endpoint-list"></div>
-    </section>
-
-    <section id="right-panel">
-        <div id="form-section">
-            <h2 id="form-title">Add Endpoint</h2>
-            <form id="endpoint-form">
-                <input type="hidden" id="endpointId">
-
-                <label>Route</label>
-                <input type="text" id="route" placeholder="/example" required>
-
-                <label>Method</label>
-                <select id="method">
-                    <option>GET</option>
-                    <option>POST</option>
-                    <option>PUT</option>
-                    <option>DELETE</option>
-                </select>
-
-                <label>Response key</label>
-                <input type="text" id="respKey" placeholder="message" required>
-
-                <label>Response value</label>
-                <input type="text" id="respValue" placeholder="Hello world!" required>
-
-                <label>Status Code</label>
-                <input type="number" id="statusCode" value="200">
-
-                <div style="display:flex; gap:0.5rem;">
-                    <button type="submit" id="saveBtn">Save</button>
-                    <button type="button" id="cancelEdit" style="display:none;">Cancel</button>
-                </div>
-            </form>
+    <header>
+        <h1>MockAPI Studio</h1>
+        <div class="header-links">
+            <a class="swagger-link" href="/swagger" target="_blank">Swagger Docs</a>
+            <a class="swagger-link" href="/panel/logs.html">Logs</a>
         </div>
+    </header>
 
-        <div id="stats-section">
-            <div class="stats-header">
-                <h2>Request Statistics</h2>
-                <div>
-                    <button id="refreshStats">Refresh</button>
-                    <button id="clearStats">Clear</button>
-                </div>
+    <main class="container">
+        <section id="endpoint-list-section">
+            <h2>Registered Endpoints</h2>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <input type="text" id="filterInput" placeholder="Search Endpoints..." style="flex:1; margin-right:10px;">
+                <button type="button" onclick="exportEndpoints()">Export</button>
+                <input type="file" id="importFile" style="display:none;" accept="application/json">
+                <button type="button" onclick="document.getElementById('importFile').click()">Import</button>
             </div>
-            <table id="stats-table">
-                <thead>
-                <tr><th>Route</th><th>Method</th><th>Call Count</th></tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
-    </section>
-</main>
+            <div id="endpoint-list"></div>
+        </section>
 
-<footer>
-    <p>Author: <a href="https://github.com/NikCraftsApps" target="_blank">GitHub</a></p>
-</footer>
+        <section id="right-panel">
+            <div id="form-section">
+                <h2 id="form-title">Add Endpoint</h2>
+                <form id="endpoint-form">
+                    <input type="hidden" id="endpointId">
 
-<script src="/panel/app.js"></script>
+                    <label>Route</label>
+                    <input type="text" id="route" placeholder="/example" required>
+
+                    <label>Method</label>
+                    <select id="method">
+                        <option>GET</option>
+                        <option>POST</option>
+                        <option>PUT</option>
+                        <option>DELETE</option>
+                    </select>
+
+                    <label>Response key</label>
+                    <input type="text" id="respKey" placeholder="message" required>
+
+                    <label>Response value</label>
+                    <input type="text" id="respValue" placeholder="Hello world!" required>
+
+                    <label>Status Code</label>
+                    <input type="number" id="statusCode" value="200">
+
+                    <label>Delay (ms)</label>
+                    <input type="number" id="delayMs" value="0">
+
+                    <div style="display:flex; gap:0.5rem;">
+                        <button type="submit" id="saveBtn">Save</button>
+                        <button type="button" id="cancelEdit" style="display:none;">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="stats-section">
+                <div class="stats-header">
+                    <h2>Request Statistics</h2>
+                    <div>
+                        <button id="refreshStats">Refresh</button>
+                        <button id="clearStats">Clear</button>
+                    </div>
+                </div>
+                <table id="stats-table">
+                    <thead>
+                        <tr><th>Route</th><th>Method</th><th>Call Count</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Author: <a href="https://github.com/NikCraftsApps" target="_blank">GitHub</a></p>
+    </footer>
+
+    <script src="/panel/app.js"></script>
 </body>
 </html>
+

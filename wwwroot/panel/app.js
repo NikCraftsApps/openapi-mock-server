@@ -1,11 +1,16 @@
 ﻿let editId = null;
+let allEndpoints = [];
 
 async function loadEndpoints() {
     const res = await fetch('/config');
-    const endpoints = await res.json();
+    allEndpoints = await res.json();
+    renderEndpoints(allEndpoints);
+}
+
+function renderEndpoints(data) {
     const list = document.getElementById('endpoint-list');
     list.innerHTML = '';
-    endpoints.forEach(ep => {
+    data.forEach(ep => {
         const div = document.createElement('div');
         div.className = 'endpoint-card';
         div.dataset.id = ep.Id;
@@ -14,15 +19,16 @@ async function loadEndpoints() {
             <p><b>${ep.Method}</b> ${ep.Route}</p>
             <pre>${ep.Response}</pre>
             <p>Status: ${ep.StatusCode}</p>
+            <p>Delay: ${ep.DelayMs || 0} ms</p>
             <p><small>ID: ${ep.Id}</small></p>
-            <button type="button" onclick="editEndpoint('${ep.Id}','${ep.Route}','${ep.Method}','${encodeURIComponent(ep.Response)}',${ep.StatusCode})">Edit</button>
+            <button type="button" onclick="editEndpoint('${ep.Id}','${ep.Route}','${ep.Method}','${encodeURIComponent(ep.Response)}',${ep.StatusCode},${ep.DelayMs || 0})">Edit</button>
             <button type="button" onclick="deleteEndpoint('${ep.Id}')">Delete</button>
         `;
         list.appendChild(div);
     });
 }
 
-function editEndpoint(id, route, method, response, status) {
+function editEndpoint(id, route, method, response, status, delay) {
     editId = id;
     document.getElementById('form-title').innerText = `Editing Endpoint (ID: ${id})`;
     document.getElementById('cancelEdit').style.display = 'inline-block';
@@ -35,6 +41,7 @@ function editEndpoint(id, route, method, response, status) {
     document.getElementById('respKey').value = Object.keys(json)[0] || "";
     document.getElementById('respValue').value = Object.values(json)[0] || "";
     document.getElementById('statusCode').value = status;
+    document.getElementById('delayMs').value = delay || 0;
 
     highlightEditingCard();
 }
@@ -60,6 +67,7 @@ document.getElementById('endpoint-form').addEventListener('submit', async e => {
     const responseKey = document.getElementById('respKey').value;
     const responseValue = document.getElementById('respValue').value;
     const statusCode = parseInt(document.getElementById('statusCode').value);
+    const delayMs = parseInt(document.getElementById('delayMs').value) || 0;
 
     if (editId) {
         const data = {
@@ -67,7 +75,8 @@ document.getElementById('endpoint-form').addEventListener('submit', async e => {
             Route: route,
             Method: method,
             Response: JSON.stringify({ [responseKey]: responseValue }),
-            StatusCode: statusCode
+            StatusCode: statusCode,
+            DelayMs: delayMs
         };
         await fetch('/config/update', {
             method: 'PUT',
@@ -80,7 +89,8 @@ document.getElementById('endpoint-form').addEventListener('submit', async e => {
             Method: method,
             ResponseKey: responseKey,
             ResponseValue: responseValue,
-            StatusCode: statusCode
+            StatusCode: statusCode,
+            DelayMs: delayMs
         };
         await fetch('/config/add', {
             method: 'POST',
@@ -121,12 +131,49 @@ async function loadStats() {
         tbody.appendChild(tr);
     });
 }
+async function exportEndpoints() {
+    const res = await fetch('/config');
+    const data = await res.json();
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'endpoints-backup.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+document.getElementById('importFile').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const text = await file.text();
+    const endpoints = JSON.parse(text);
+
+    await fetch('/config/import', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(endpoints)
+    });
+
+    await loadEndpoints();
+});
+
 
 document.getElementById('refreshStats').addEventListener('click', () => loadStats());
 document.getElementById('clearStats').addEventListener('click', async () => {
     if (!confirm("Clear all statistics?")) return;
     await fetch('/stats/clear', { method: 'POST' });
     loadStats();
+});
+
+document.getElementById('filterInput').addEventListener('input', e => {
+    const val = e.target.value.toLowerCase();
+    const filtered = allEndpoints.filter(ep =>
+        ep.Route.toLowerCase().includes(val) || ep.Method.toLowerCase().includes(val)
+    );
+    renderEndpoints(filtered);
 });
 
 loadEndpoints();

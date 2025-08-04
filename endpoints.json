@@ -1,26 +1,38 @@
 [
   {
-    "Id": "b5c59a2e-ec5a-4c38-9e41-c42b5f421f5b",
+    "Id": "f2c42be8-1e59-4c91-a76d-87a44b3c50e2",
     "Route": "/hello",
     "Method": "GET",
-    "Response": "{\u0022message\u0022:\u0022Hello world!\u0022}",
+    "Response": "{\"message\":\"Hello from mock server\"}",
     "StatusCode": 200,
+    "DelayMs": 0,
     "CallCount": 0
   },
   {
-    "Id": "b3fbe31f-3572-4cb4-a2c1-9d26950d7a3f",
+    "Id": "cd1056b5-931f-4b37-a046-d3f674f9f9f9",
     "Route": "/user",
     "Method": "POST",
-    "Response": "{\u0022status\u0022:\u0022user created\u0022,\u0022userId\u0022:123}",
+    "Response": "{\"status\":\"user created\",\"userId\":123}",
     "StatusCode": 201,
+    "DelayMs": 0,
     "CallCount": 0
   },
   {
-    "Id": "7c370b9e-1de7-4cd6-8b84-0a9fc2d7e6b7",
+    "Id": "9af287ac-18ef-48ad-9557-6e6b9d72f8ad",
     "Route": "/products",
     "Method": "GET",
-    "Response": "{\u0022products\u0022:\u0022[object Object],[object Object]\u0022}",
+    "Response": "{\"products\":[{\"id\":1,\"name\":\"Keyboard\"},{\"id\":2,\"name\":\"Mouse\"}]}",
     "StatusCode": 200,
+    "DelayMs": 0,
+    "CallCount": 0
+  },
+  {
+    "Id": "0c7caa3f-9bc2-4d57-9a88-6a2c27d36b50",
+    "Route": "/delayed",
+    "Method": "GET",
+    "Response": "{\"info\":\"This response is delayed by 2 seconds\"}",
+    "StatusCode": 200,
+    "DelayMs": 2000,
     "CallCount": 0
   }
 ]
